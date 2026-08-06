@@ -1,28 +1,73 @@
-<section class="card control-card">
-    <h2>Posicionamiento (Modbus)</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Festo CMMT Control Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="festo-header">
+        <div class="logo">FESTO</div>
+        <h1>CMMT Control Panel</h1>
+        <span class="ip-badge">IP: {{ device_ip }}</span>
+    </header>
 
-    <div class="action-buttons">
-        <button id="btn-ack" class="btn btn-secondary">Acknowledge Faults</button>
-        <button id="btn-enable" class="btn btn-secondary">Enable Powerstage</button>
-        <button id="btn-ref" class="btn btn-secondary">Referencing</button>
-        <button id="btn-disconnect" class="btn btn-secondary">Desconectar</button>
-    </div>
+    <main class="dashboard">
+        <section class="card status-card">
+            <h2>Estado del Drive</h2>
+            <div id="connection-status" class="status-indicator disconnected">Desconectado</div>
+            <button id="btn-connect" class="btn btn-primary">Conectar</button>
 
-    <hr>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="label">Posición actual</span>
+                    <span id="actual-position" class="value">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Velocidad actual</span>
+                    <span id="actual-velocity" class="value">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Listo</span>
+                    <span id="ready-status" class="value">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Fallo</span>
+                    <span id="fault-status" class="value">--</span>
+                </div>
+            </div>
+        </section>
 
-    <div class="input-group">
-        <label for="target-position">Posición objetivo</label>
-        <input type="number" id="target-position" value="100000">
-    </div>
-    <div class="input-group">
-        <label for="target-velocity">Velocidad</label>
-        <input type="number" id="target-velocity" value="600000">
-    </div>
-    <div class="input-group">
-        <label>
-            <input type="checkbox" id="absolute-checkbox">
-            Posición absoluta
-        </label>
-    </div>
-    <button id="btn-move" class="btn btn-primary">Mover a posición</button>
-</section>
+        <section class="card control-card">
+            <h2>Posicionamiento (Modbus)</h2>
+
+            <div class="action-buttons">
+                <button id="btn-ack" class="btn btn-secondary">Acknowledge Faults</button>
+                <button id="btn-enable" class="btn btn-secondary">Enable Powerstage</button>
+                <button id="btn-ref" class="btn btn-secondary">Referencing</button>
+                <button id="btn-disconnect" class="btn btn-secondary">Desconectar</button>
+            </div>
+
+            <hr>
+
+            <div class="input-group">
+                <label for="target-position">Posición objetivo</label>
+                <input type="number" id="target-position" value="100000">
+            </div>
+            <div class="input-group">
+                <label for="target-velocity">Velocidad</label>
+                <input type="number" id="target-velocity" value="600000">
+            </div>
+            <div class="input-group">
+                <label>
+                    <input type="checkbox" id="absolute-checkbox">
+                    Posición absoluta
+                </label>
+            </div>
+            <button id="btn-move" class="btn btn-primary">Mover a posición</button>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
