@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Festo CMMT Control Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="festo-header">
+        <div class="logo">FESTO</div>
+        <h1>CMMT Control Panel</h1>
+        <span class="ip-badge">IP: {{ device_ip }}</span>
+    </header>
+
+    <main class="dashboard">
+        <section class="card status-card">
+            <h2>Estado del Drive</h2>
+            <div id="connection-status" class="status-indicator disconnected">Desconectado</div>
+            <button id="btn-connect" class="btn btn-primary">Conectar</button>
+
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="label">Posición actual</span>
+                    <span id="actual-position" class="value">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Velocidad actual</span>
+                    <span id="actual-velocity" class="value">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Listo</span>
+                    <span id="ready-status" class="value">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Fallo</span>
+                    <span id="fault-status" class="value">--</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card control-card">
+            <h2>Posicionamiento (Telegrama 111)</h2>
+            <div class="input-group">
+                <label for="target-position">Posición objetivo (mm/unidades)</label>
+                <input type="number" id="target-position" value="0">
+            </div>
+            <div class="input-group">
+                <label for="target-velocity">Velocidad (%)</label>
+                <input type="number" id="target-velocity" value="100" min="1" max="100">
+            </div>
+            <button id="btn-move" class="btn btn-primary">Mover a posición</button>
+
+            <div class="action-buttons">
+                <button id="btn-home" class="btn btn-secondary">Home</button>
+                <button id="btn-reset" class="btn btn-secondary">Reset fallo</button>
+                <button id="btn-stop" class="btn btn-danger">STOP</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
