@@ -1,8 +1,8 @@
 const btnConnect = document.getElementById("btn-connect");
 const btnMove = document.getElementById("btn-move");
-const btnHome = document.getElementById("btn-home");
-const btnReset = document.getElementById("btn-reset");
-const btnStop = document.getElementById("btn-stop");
+const btnAck = document.getElementById("btn-ack");
+const btnEnable = document.getElementById("btn-enable");
+const btnRef = document.getElementById("btn-ref");
 
 const connectionStatus = document.getElementById("connection-status");
 
@@ -28,32 +28,33 @@ btnConnect.addEventListener("click", async () => {
     }
 });
 
+btnAck.addEventListener("click", async () => {
+    const result = await postJSON("/api/acknowledge_faults");
+    if (!result.success) alert("Error: " + result.error);
+});
+
+btnEnable.addEventListener("click", async () => {
+    const result = await postJSON("/api/enable_powerstage");
+    if (!result.success) alert("Error: " + result.error);
+});
+
+btnRef.addEventListener("click", async () => {
+    const result = await postJSON("/api/referencing");
+    if (!result.success) alert("Error en referencing: " + result.error);
+});
+
 btnMove.addEventListener("click", async () => {
     const position = parseFloat(document.getElementById("target-position").value);
     const velocity = parseFloat(document.getElementById("target-velocity").value);
-    const result = await postJSON("/api/move", { position, velocity });
+    const absolute = document.getElementById("absolute-checkbox").checked;
+    const result = await postJSON("/api/move", { position, velocity, absolute });
     if (!result.success) alert("Error al mover: " + result.error);
-});
-
-btnHome.addEventListener("click", async () => {
-    const result = await postJSON("/api/home");
-    if (!result.success) alert("Error en homing: " + result.error);
-});
-
-btnReset.addEventListener("click", async () => {
-    const result = await postJSON("/api/reset");
-    if (!result.success) alert("Error al resetear: " + result.error);
-});
-
-btnStop.addEventListener("click", async () => {
-    const result = await postJSON("/api/stop");
-    if (!result.success) alert("Error al parar: " + result.error);
 });
 
 async function updateStatus() {
     const res = await fetch("/api/status");
     const data = await res.json();
-    if (data.connected) {
+    if (data.connected && !data.error) {
         document.getElementById("actual-position").textContent = data.actual_position ?? "--";
         document.getElementById("actual-velocity").textContent = data.actual_velocity ?? "--";
         document.getElementById("ready-status").textContent = data.ready ? "Sí" : "No";
